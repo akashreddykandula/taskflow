@@ -61,7 +61,7 @@ function Landing () {
                 Get Started Free
               </Link>
             </motion.div>
-          </div>;
+          </div>
 
         </motion.div>
 

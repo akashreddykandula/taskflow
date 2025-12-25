@@ -236,7 +236,7 @@ const doneCount = tasks.filter (t => t.status === 'Done').length;
   >
     Logout
   </button>
-</motion.div>;
+</motion.div>
 
 
       {/* CONTENT */}
@@ -661,7 +661,7 @@ const doneCount = tasks.filter (t => t.status === 'Done').length;
         </div>
       </motion.form>
     </motion.div>}
-</AnimatePresence>;
+</AnimatePresence>
 
 
 
@@ -727,7 +727,7 @@ const doneCount = tasks.filter (t => t.status === 'Done').length;
       Crafted By AR using the MERN Stack
     </p>
   </div>
-</footer>;
+</footer>
 
     </div>
     
