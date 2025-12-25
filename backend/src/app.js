@@ -10,7 +10,10 @@ const app = express ();
 
 app.use (
   cors ({
-    origin: ['http://localhost:5173', 'https://taskflow.vercel.app'],
+    origin: [
+      'http://localhost:5173',
+      'https://taskflow-532mhxl7m-akash-kandulas-projects.vercel.app/',
+    ],
     credentials: true,
   })
 );
