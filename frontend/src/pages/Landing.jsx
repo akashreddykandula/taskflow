@@ -39,31 +39,30 @@ function Landing () {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link to="/login">
-              <motion.button
-                whileHover={{scale: 1.08}}
-                whileTap={{scale: 0.95}}
-                className="px-10 py-4 rounded-2xl
-                           bg-white text-blue-700 font-bold
-                           shadow-xl hover:bg-blue-100 transition"
+            <motion.div whileHover={{scale: 1.08}} whileTap={{scale: 0.95}}>
+              <Link
+                to="/login"
+                className="inline-block px-10 py-4 rounded-2xl
+                 bg-white text-blue-700 font-bold
+                 shadow-xl hover:bg-blue-100 transition"
               >
                 Sign In
-              </motion.button>
-            </Link>
+              </Link>
+            </motion.div>
 
-            <Link to="/register">
-              <motion.button
-                whileHover={{scale: 1.08}}
-                whileTap={{scale: 0.95}}
-                className="px-10 py-4 rounded-2xl
-                           bg-gradient-to-r from-blue-500 to-indigo-600
-                           text-white font-bold shadow-xl
-                           hover:from-blue-600 hover:to-indigo-700 transition"
+            <motion.div whileHover={{scale: 1.08}} whileTap={{scale: 0.95}}>
+              <Link
+                to="/register"
+                className="inline-block px-10 py-4 rounded-2xl
+                 bg-gradient-to-r from-blue-500 to-indigo-600
+                 text-white font-bold shadow-xl
+                 hover:from-blue-600 hover:to-indigo-700 transition"
               >
                 Get Started Free
-              </motion.button>
-            </Link>
-          </div>
+              </Link>
+            </motion.div>
+          </div>;
+
         </motion.div>
 
         {/* FEATURES SECTION */}
