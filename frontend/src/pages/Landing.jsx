@@ -1,142 +1,196 @@
 import {Link} from 'react-router-dom';
 import {motion} from 'framer-motion';
+import {useEffect, useState} from 'react';
 
 function Landing () {
+  const [scrolled, setScrolled] = useState (false);
+  const [activeSection, setActiveSection] = useState ('');
+  const [menuOpen, setMenuOpen] = useState (false);
+
+  useEffect (() => {
+    const onScroll = () => {
+      setScrolled (window.scrollY > 50);
+
+      const sections = ['features', 'workflow', 'pricing', 'about'];
+      for (const sec of sections) {
+        const el = document.getElementById (sec);
+        if (el) {
+          const rect = el.getBoundingClientRect ();
+          if (rect.top <= 120 && rect.bottom >= 120) {
+            setActiveSection (sec);
+          }
+        }
+      }
+    };
+
+    window.addEventListener ('scroll', onScroll);
+    return () => window.removeEventListener ('scroll', onScroll);
+  }, []);
+
   return (
     <div className="relative min-h-screen overflow-hidden text-white">
-      {/* 🌄 Background Image */}
+      {/* NAVBAR */}
+      <motion.nav
+        initial={{y: -80, opacity: 0}}
+        animate={{y: 0, opacity: 1}}
+        transition={{duration: 0.6}}
+        className={`fixed top-0 left-0 w-full z-50 transition-all ${scrolled ? 'bg-black/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'}`}
+      >
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <Link to="/" className="text-2xl font-extrabold text-white">
+            Task<span className="text-blue-400">Flow</span>
+          </Link>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+            {[
+              {id: 'features', label: 'Features'},
+              {id: 'workflow', label: 'How it Works'},
+              {id: 'pricing', label: 'Pricing'},
+              {id: 'about', label: 'About'},
+            ].map (item => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className={`transition ${activeSection === item.id ? 'text-blue-400' : 'text-blue-100 hover:text-white'}`}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+
+          {/* Mobile Toggle */}
+          <button
+            onClick={() => setMenuOpen (!menuOpen)}
+            className="md:hidden text-2xl text-white"
+          >
+            ☰
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {menuOpen &&
+          <motion.div
+            initial={{height: 0, opacity: 0}}
+            animate={{height: 'auto', opacity: 1}}
+            transition={{duration: 0.3}}
+            className="md:hidden bg-black/90 backdrop-blur-lg px-6 py-6 space-y-4"
+          >
+            {[
+              {id: 'features', label: 'Features'},
+              {id: 'workflow', label: 'How it Works'},
+              {id: 'pricing', label: 'Pricing'},
+              {id: 'about', label: 'About'},
+            ].map (item => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={() => setMenuOpen (false)}
+                className={`block text-lg transition ${activeSection === item.id ? 'text-blue-400' : 'text-blue-100 hover:text-white'}`}
+              >
+                {item.label}
+              </a>
+            ))}
+          </motion.div>}
+      </motion.nav>
+
+      {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d')",
         }}
       />
-
-      {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/90 via-indigo-900/90 to-black/90" />
 
-      {/* Content */}
-      <div className="relative z-10 px-6 py-20 max-w-7xl mx-auto">
-        {/* HERO SECTION */}
+      {/* CONTENT */}
+      <div className="relative z-10 px-6 pt-32 pb-20 max-w-7xl mx-auto">
+        {/* HERO */}
         <motion.div
           initial={{opacity: 0, y: 40}}
           animate={{opacity: 1, y: 0}}
           transition={{duration: 0.9}}
           className="text-center max-w-4xl mx-auto"
         >
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-6">
             Organize Your Work <br />
-            <span className="text-blue-300">
-              The Smart & Visual Way
-            </span>
+            <span className="text-blue-300">The Smart & Visual Way</span>
           </h1>
 
           <p className="text-lg md:text-xl text-blue-100 mb-10">
-            TaskFlow is a modern task management platform that helps
-            you plan, track, and complete tasks efficiently using a
-            clean Kanban-style workflow.
+            TaskFlow is a modern task management platform that helps you plan,
+            track, and complete tasks efficiently using a Kanban workflow.
           </p>
 
-          {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <motion.div whileHover={{scale: 1.08}} whileTap={{scale: 0.95}}>
-              <Link
-                to="/login"
-                className="inline-block px-10 py-4 rounded-2xl
-                 bg-white text-blue-700 font-bold
-                 shadow-xl hover:bg-blue-100 transition"
-              >
-                Sign In
-              </Link>
-            </motion.div>
+            <Link
+              to="/login"
+              className="px-10 py-4 rounded-2xl bg-white text-blue-700 font-bold shadow-xl hover:bg-blue-100 transition"
+            >
+              Sign In
+            </Link>
 
-            <motion.div whileHover={{scale: 1.08}} whileTap={{scale: 0.95}}>
-              <Link
-                to="/register"
-                className="inline-block px-10 py-4 rounded-2xl
-                 bg-gradient-to-r from-blue-500 to-indigo-600
-                 text-white font-bold shadow-xl
-                 hover:from-blue-600 hover:to-indigo-700 transition"
-              >
-                Get Started Free
-              </Link>
-            </motion.div>
+            <Link
+              to="/register"
+              className="px-10 py-4 rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold shadow-xl hover:from-blue-600 hover:to-indigo-700 transition"
+            >
+              Get Started Free
+            </Link>
           </div>
-
         </motion.div>
 
-        {/* FEATURES SECTION */}
+        {/* FEATURES */}
         <motion.div
-          initial={{opacity: 0, y: 40}}
-          whileInView={{opacity: 1, y: 0}}
-          transition={{duration: 0.8}}
-          viewport={{once: true}}
+          id="features"
           className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-10"
         >
           {[
             {
               title: '📌 Smart Task Management',
-              desc: 'Create, update, and organize tasks effortlessly with a clean and intuitive interface.',
+              desc: 'Create, update, and organize tasks effortlessly.',
             },
             {
               title: '🗂️ Kanban Board',
-              desc: 'Visualize your workflow using Todo, In Progress, and Done columns with drag & drop.',
+              desc: 'Visualize workflow with drag & drop.',
             },
             {
               title: '🔐 Secure & Reliable',
-              desc: 'JWT-based authentication ensures your data stays private and protected.',
+              desc: 'JWT-based authentication for safety.',
             },
-          ].map ((item, index) => (
+          ].map ((item, i) => (
             <div
-              key={index}
+              key={i}
               className="bg-white/10 backdrop-blur-xl p-8 rounded-3xl shadow-lg"
             >
-              <h3 className="text-xl font-bold mb-3">
-                {item.title}
-              </h3>
-              <p className="text-blue-100 text-sm leading-relaxed">
-                {item.desc}
-              </p>
+              <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+              <p className="text-blue-100 text-sm">{item.desc}</p>
             </div>
           ))}
         </motion.div>
 
-        {/* STATS SECTION */}
+        {/* WORKFLOW */}
         <motion.div
-          initial={{opacity: 0}}
-          whileInView={{opacity: 1}}
-          transition={{duration: 0.8}}
-          viewport={{once: true}}
+          id="workflow"
           className="mt-28 grid grid-cols-1 sm:grid-cols-3 gap-10 text-center"
         >
           <div>
-            <p className="text-4xl font-extrabold">⚡</p>
-            <p className="text-lg font-semibold mt-2">
-              Faster Productivity
-            </p>
+            <p className="text-4xl">⚡</p>
+            <p className="mt-2 font-semibold">Faster Productivity</p>
           </div>
           <div>
-            <p className="text-4xl font-extrabold">📈</p>
-            <p className="text-lg font-semibold mt-2">
-              Clear Progress Tracking
-            </p>
+            <p className="text-4xl">📈</p>
+            <p className="mt-2 font-semibold">Clear Progress</p>
           </div>
           <div>
-            <p className="text-4xl font-extrabold">🎯</p>
-            <p className="text-lg font-semibold mt-2">
-              Focused Workflows
-            </p>
+            <p className="text-4xl">🎯</p>
+            <p className="mt-2 font-semibold">Focused Workflows</p>
           </div>
         </motion.div>
 
         {/* FOOTER */}
-        <div className="mt-32 text-center text-blue-200 text-sm">
-          <p>
-            TaskFlow • Built with ❤️ using MERN Stack
-          </p>
-          <p className="mt-1">
-            Designed for students, developers & professionals
-          </p>
+        <div id="about" className="mt-32 text-center text-blue-200 text-sm">
+          <p>TaskFlow • Built with ❤️ using MERN Stack</p>
+          <p className="mt-1">Designed for students & professionals</p>
         </div>
       </div>
     </div>
