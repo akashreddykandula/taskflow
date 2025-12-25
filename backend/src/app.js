@@ -18,3 +18,15 @@ app.use (
 );
 
 app.use (express.json ());
+
+const authRoutes = require ('./routes/authRoutes');
+const taskRoutes = require ('./routes/taskRoutes');
+
+app.use ('/api/auth', authRoutes);
+app.use ('/api/tasks', taskRoutes);
+
+app.get ('/', (req, res) => {
+  res.send ('TaskFlow API is running...');
+});
+
+module.exports = app; // 🔥 THIS LINE IS CRITICAL
