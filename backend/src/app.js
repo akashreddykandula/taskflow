@@ -1,5 +1,10 @@
 const express = require ('express');
 const cors = require ('cors');
+const dotenv = require ('dotenv');
+const connectDB = require ('./config/db');
+
+dotenv.config ();
+connectDB ();
 
 const app = express ();
 
@@ -11,7 +16,5 @@ app.use (
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
-
-app.options ('*', cors ());
 
 app.use (express.json ());
